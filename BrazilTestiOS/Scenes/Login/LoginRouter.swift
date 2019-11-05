@@ -14,7 +14,7 @@ import UIKit
 
 @objc protocol LoginRoutingLogic
 {
-  func routeToHome(segue: UIStoryboardSegue?)
+  func routeToGoToHome(segue: UIStoryboardSegue?)
 }
 
 protocol LoginDataPassing
@@ -29,7 +29,7 @@ class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing
   
   // MARK: Routing
   
-    func routeToHome(segue: UIStoryboardSegue?) {
+    func routeToGoToHome(segue: UIStoryboardSegue?) {
         if let segue = segue {
           let destinationVC = segue.destination as! HomeViewController
           var destinationDS = destinationVC.router!.dataStore!

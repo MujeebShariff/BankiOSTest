@@ -56,3 +56,4 @@ class Utilities {
         return UIColor(red:red, green:green, blue:blue, alpha:CGFloat(alpha))
     }
 }
+//4C64F2

@@ -14,7 +14,14 @@ import UIKit
 
 class HomeWorker
 {
-  func doSomeWork()
+  func getStatements(completion: @escaping (Bool, Statement?, Error?) -> Void)
   {
+      _ = Network.getRequest(url: NetworkRouter.Endpoints.statements.url, responseType: Statement.self) { (statementList, error) in
+          if let statementList = statementList {
+              completion(true, statementList, nil)
+          } else {
+              completion(false, nil, error)
+          }
+      }
   }
 }

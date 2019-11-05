@@ -14,7 +14,9 @@ import UIKit
 
 protocol HomeBusinessLogic
 {
-  func doSomething(request: Home.Something.Request)
+    func getUserData(request: Home.HomeData.Request)
+    func getStatementList(request: Home.GetStatementList.Request)
+    func logout()
 }
 
 protocol HomeDataStore
@@ -25,19 +27,31 @@ protocol HomeDataStore
 
 class HomeInteractor: HomeBusinessLogic, HomeDataStore
 {
+    
   var presenter: HomePresentationLogic?
   var worker: HomeWorker?
   //var name: String = ""
   var userDetails: UserAccount!
     
   // MARK: Do something
-  
-  func doSomething(request: Home.Something.Request)
-  {
-    worker = HomeWorker()
-    worker?.doSomeWork()
+
+    func getUserData(request: Home.HomeData.Request) {
+        let response = Home.HomeData.Response(accountDetails: userDetails)
+        presenter?.presentAccountDetails(response: response)
+    }
     
-    let response = Home.Something.Response()
-    presenter?.presentSomething(response: response)
-  }
+    func getStatementList(request: Home.GetStatementList.Request) {
+        worker = HomeWorker()
+        worker?.getStatements{ (success, statements, error) in
+            
+            if success {
+                let response = Home.GetStatementList.Response(success: success, statements: statements?.statementList)
+                self.presenter?.presentStatementDetails(response: response)
+            }
+        }
+    }
+    
+    func logout() {
+        presenter?.logout()
+    }
 }

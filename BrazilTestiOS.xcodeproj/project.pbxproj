@@ -32,6 +32,7 @@
 		86992466236CA9B700CB63EE /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86992456236CA9B700CB63EE /* HomeInteractor.swift */; };
 		86992467236CA9B700CB63EE /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86992456236CA9B700CB63EE /* HomeInteractor.swift */; };
 		86992468236CA9B700CB63EE /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86992456236CA9B700CB63EE /* HomeInteractor.swift */; };
+		8699246B236DC65200CB63EE /* TansactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8699246A236DC65200CB63EE /* TansactionTableViewCell.swift */; };
 		86CA262C236B3FD5005F9943 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CA262B236B3FD5005F9943 /* AppDelegate.swift */; };
 		86CA262E236B3FD5005F9943 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CA262D236B3FD5005F9943 /* SceneDelegate.swift */; };
 		86CA2630236B3FD5005F9943 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CA262F236B3FD5005F9943 /* ViewController.swift */; };
@@ -91,6 +92,7 @@
 		86992454236CA9B700CB63EE /* HomeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModels.swift; sourceTree = "<group>"; };
 		86992455236CA9B700CB63EE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		86992456236CA9B700CB63EE /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
+		8699246A236DC65200CB63EE /* TansactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TansactionTableViewCell.swift; sourceTree = "<group>"; };
 		86CA2628236B3FD5005F9943 /* BrazilTestiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrazilTestiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86CA262B236B3FD5005F9943 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86CA262D236B3FD5005F9943 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -192,12 +194,13 @@
 		86992469236CA9CC00CB63EE /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				86992451236CA9B700CB63EE /* HomePresenter.swift */,
-				86992452236CA9B700CB63EE /* HomeWorker.swift */,
-				86992453236CA9B700CB63EE /* HomeRouter.swift */,
-				86992454236CA9B700CB63EE /* HomeModels.swift */,
 				86992455236CA9B700CB63EE /* HomeViewController.swift */,
 				86992456236CA9B700CB63EE /* HomeInteractor.swift */,
+				86992451236CA9B700CB63EE /* HomePresenter.swift */,
+				86992454236CA9B700CB63EE /* HomeModels.swift */,
+				86992452236CA9B700CB63EE /* HomeWorker.swift */,
+				86992453236CA9B700CB63EE /* HomeRouter.swift */,
+				8699246A236DC65200CB63EE /* TansactionTableViewCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				86CA2669236C4B87005F9943 /* LoginRouter.swift in Sources */,
 				8699244E236C856300CB63EE /* Network.swift in Sources */,
 				86CA266F236C4B87005F9943 /* LoginViewController.swift in Sources */,
+				8699246B236DC65200CB63EE /* TansactionTableViewCell.swift in Sources */,
 				86CA2630236B3FD5005F9943 /* ViewController.swift in Sources */,
 				8699244B236C84EE00CB63EE /* UserPersistance.swift in Sources */,
 				8699245A236CA9B700CB63EE /* HomeWorker.swift in Sources */,
