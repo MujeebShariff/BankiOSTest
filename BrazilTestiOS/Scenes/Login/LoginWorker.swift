@@ -14,6 +14,29 @@ import UIKit
 
 class LoginWorker
 {
+    func validateUser(username: String) -> Bool {
+        do {
+            if try NSRegularExpression(pattern: "^([0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2})|([A-Z0-9a-z.0-9_%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4})$", options: .caseInsensitive).firstMatch(in: username, options: [], range: NSRange(location: 0, length: username.count)) == nil {
+                return false
+            }
+        } catch {
+            return false
+        }
+        return true
+    }
+    
+    func validatePassword(password: String) -> Bool {
+        do {
+            if try NSRegularExpression(pattern: "^.*(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%&?]).*$", options: []).firstMatch(in: password, options: [], range: NSRange(location: 0, length: password.count)) == nil {
+                return false
+            }
+        } catch {
+            return false
+        }
+        
+        return true
+    }
+    
     func login(username: String, password: String, completion: @escaping (Bool, LoginResponse?, Error?) -> Void) {
         let body = LoginRequest(user: username, password: password)
         Network.postRequest(url: NetworkRouter.Endpoints.login.url, responseType: LoginResponse.self, body: body) { response, error in

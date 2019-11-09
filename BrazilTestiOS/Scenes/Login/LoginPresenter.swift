@@ -14,6 +14,7 @@ import UIKit
 
 protocol LoginPresentationLogic
 {
+  func presentValidationResult(response: Login.ValidationModel.Response)
   func presentLoginResult(response: Login.LoginModel.Response)
 }
 
@@ -21,11 +22,19 @@ class LoginPresenter: LoginPresentationLogic
 {
   weak var viewController: LoginDisplayLogic?
   
-  // MARK: Do something
+  // MARK: Validation
   
+  func presentValidationResult(response: Login.ValidationModel.Response)
+  {
+    let viewModel = Login.ValidationModel.ViewModel(validUser: response.validUser, validPassword: response.validPassword)
+    viewController?.ValidationResult(viewModel: viewModel)
+  }
+    
+  // MARK: Login
+
   func presentLoginResult(response: Login.LoginModel.Response)
   {
     let viewModel = Login.LoginModel.ViewModel(success: response.success, loginResponse: response.loginResponse)
-    viewController?.displaySomething(viewModel: viewModel)
+    viewController?.displayLoginResult(viewModel: viewModel)
   }
 }

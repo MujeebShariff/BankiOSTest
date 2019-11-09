@@ -34,4 +34,22 @@ enum Login
         let loginResponse: LoginResponse
     }
   }
+    
+    enum ValidationModel {
+        struct Request
+        {
+            var user: String?
+            var password: String?
+        }
+        struct Response
+        {
+            var validUser: Bool
+            var validPassword: Bool
+        }
+        struct ViewModel
+        {
+            var validUser: Bool
+            var validPassword: Bool
+        }
+    }
 }

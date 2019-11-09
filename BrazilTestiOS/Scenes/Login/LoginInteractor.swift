@@ -14,6 +14,7 @@ import UIKit
 
 protocol LoginBusinessLogic
 {
+  func validateInputs(request: Login.ValidationModel.Request)
   func login(request: Login.LoginModel.Request)
 }
 
@@ -27,11 +28,24 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore
     
   var presenter: LoginPresentationLogic?
   var worker: LoginWorker?
-    var userDetails: UserAccount?
-  //var name: String = ""
+  var userDetails: UserAccount?
+    
+  // MARK: Validation
   
-  // MARK: Do something
-  
+    func validateInputs(request: Login.ValidationModel.Request) {
+        let user = request.user
+        let password = request.password
+        worker = LoginWorker()
+        let validU: Bool?
+        let validP: Bool?
+        validU = worker?.validateUser(username: user!)
+        validP = worker?.validatePassword(password: password!)
+        let response = Login.ValidationModel.Response(validUser: validU!, validPassword: validP!)
+        presenter?.presentValidationResult(response: response)
+    }
+    
+  // MARK: Login
+    
     func login(request: Login.LoginModel.Request) {
         let user = request.user
         let password = request.password
@@ -39,7 +53,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore
         worker?.login(username: user!, password: password!) { (success, response, error) in
             
             if(success){
-                UserPersistance().saveUserId("\(response!.userAccount.userId)")
+                UserPersistance().saveUserId(userId: "\(response!.userAccount.userId)", userName: user)
             }
             let response = Login.LoginModel.Response(success: success, loginResponse: response!)
             self.userDetails = response.loginResponse.userAccount

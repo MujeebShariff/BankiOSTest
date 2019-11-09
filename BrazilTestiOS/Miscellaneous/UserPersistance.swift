@@ -8,14 +8,20 @@
 
 import Foundation
 class UserPersistance {
-    func saveUserId(_ userId: String?)
+    func saveUserId(userId: String?, userName: String?)
     {
-        UserDefaults.standard.set(userId, forKey: "user")
+        UserDefaults.standard.set(userId, forKey: "userId")
+        UserDefaults.standard.set(userName, forKey: "userName")
     }
 
     func getUserId() -> String?
     {
-        return UserDefaults.standard.string(forKey: "user")
+        return UserDefaults.standard.string(forKey: "userId")
+    }
+    
+    func getUserName() -> String?
+    {
+        return UserDefaults.standard.string(forKey: "userName")
     }
 }
 
