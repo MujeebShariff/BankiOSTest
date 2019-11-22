@@ -14,6 +14,7 @@ import UIKit
 
 protocol LoginPresentationLogic
 {
+    func presentFetchUserResult(response: Login.FetchModel.Response)
   func presentValidationResult(response: Login.ValidationModel.Response)
   func presentLoginResult(response: Login.LoginModel.Response)
 }
@@ -22,6 +23,13 @@ class LoginPresenter: LoginPresentationLogic
 {
   weak var viewController: LoginDisplayLogic?
   
+   // MARK: Fetch Previous User
+    func presentFetchUserResult(response: Login.FetchModel.Response)
+    {
+        let viewModel = Login.FetchModel.ViewModel(user: response.user)
+        viewController?.displayFetchUserResult(viewModel: viewModel)
+    }
+    
   // MARK: Validation
   
   func presentValidationResult(response: Login.ValidationModel.Response)

@@ -10,7 +10,7 @@ import Foundation
 
 import UIKit
 
-class Utilities {
+public class Utilities {
     var container: UIView = UIView()
     var loadingView: UIView = UIView()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()

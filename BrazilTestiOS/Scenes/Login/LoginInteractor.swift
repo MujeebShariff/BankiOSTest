@@ -14,6 +14,8 @@ import UIKit
 
 protocol LoginBusinessLogic
 {
+    var userDetails: UserAccount? { get }
+    func fetchUser(request: Login.FetchModel.Request)
   func validateInputs(request: Login.ValidationModel.Request)
   func login(request: Login.LoginModel.Request)
 }
@@ -25,21 +27,28 @@ protocol LoginDataStore
 
 class LoginInteractor: LoginBusinessLogic, LoginDataStore
 {
-    
+  var userPersistance = UserPersistance()
   var presenter: LoginPresentationLogic?
-  var worker: LoginWorker?
+  var worker = LoginWorker()
   var userDetails: UserAccount?
     
+  // MARK: Fetch Previous Logged In User
+    
+    func fetchUser(request: Login.FetchModel.Request){
+        let userName = userPersistance.getUserName()
+        let response = Login.FetchModel.Response(user: userName)
+        presenter?.presentFetchUserResult(response: response)
+        
+    }
   // MARK: Validation
   
     func validateInputs(request: Login.ValidationModel.Request) {
         let user = request.user
         let password = request.password
-        worker = LoginWorker()
         let validU: Bool?
         let validP: Bool?
-        validU = worker?.validateUser(username: user!)
-        validP = worker?.validatePassword(password: password!)
+        validU = worker.validateUser(username: user!)
+        validP = worker.validatePassword(password: password!)
         let response = Login.ValidationModel.Response(validUser: validU!, validPassword: validP!)
         presenter?.presentValidationResult(response: response)
     }
@@ -49,11 +58,10 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore
     func login(request: Login.LoginModel.Request) {
         let user = request.user
         let password = request.password
-        worker = LoginWorker()
-        worker?.login(username: user!, password: password!) { (success, response, error) in
+        worker.login(username: user ?? "", password: password ?? "") { (success, response, error) in
             
             if(success){
-                UserPersistance().saveUserId(userId: "\(response!.userAccount.userId)", userName: user)
+                self.userPersistance.saveUserId(userId: "\(response!.userAccount.userId)", userName: user)
             }
             let response = Login.LoginModel.Response(success: success, loginResponse: response!)
             self.userDetails = response.loginResponse.userAccount

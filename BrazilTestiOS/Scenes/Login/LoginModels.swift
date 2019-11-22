@@ -35,6 +35,21 @@ enum Login
     }
   }
     
+    enum FetchModel
+    {
+      struct Request
+      {
+      }
+      struct Response
+      {
+          var user: String?
+      }
+      struct ViewModel
+      {
+          var user: String?
+      }
+    }
+    
     enum ValidationModel {
         struct Request
         {

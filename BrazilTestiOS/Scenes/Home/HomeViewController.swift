@@ -130,7 +130,7 @@ class HomeViewController: UIViewController, HomeDisplayLogic, UITableViewDataSou
     }
     
     // MARK: - TableView
-    
+
     func numberOfSections(in tableView: UITableView) -> Int
     {
       return 1

@@ -29,7 +29,7 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore
 {
     
   var presenter: HomePresentationLogic?
-  var worker: HomeWorker?
+  var worker = HomeWorker()
   //var name: String = ""
   var userDetails: UserAccount!
     
@@ -40,9 +40,9 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore
         presenter?.presentAccountDetails(response: response)
     }
     
-    func getStatementList(request: Home.GetStatementList.Request) {
-        worker = HomeWorker()
-        worker?.getStatements{ (success, statements, error) in
+    func getStatementList(request: Home.GetStatementList.Request) { 
+        
+        worker.getStatements{ (success, statements, error) in
             
             if success {
                 let response = Home.GetStatementList.Response(success: success, statements: statements?.statementList)

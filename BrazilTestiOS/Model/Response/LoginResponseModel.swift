@@ -29,4 +29,8 @@ struct ErrorModel: Codable {
         code = (try container.decodeIfPresent(Int.self, forKey: .code)) ?? -1
         errorMessage = (try container.decodeIfPresent(String.self, forKey: .errorMessage)) ?? "NA"
     }
+    init(code: Int, message: String) {
+        self.code = code
+        self.errorMessage = message
+    }
 }

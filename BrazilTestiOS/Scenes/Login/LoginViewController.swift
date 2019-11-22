@@ -14,6 +14,7 @@ import UIKit
 
 protocol LoginDisplayLogic: class
 {
+    func displayFetchUserResult(viewModel: Login.FetchModel.ViewModel)
   func ValidationResult(viewModel: Login.ValidationModel.ViewModel)
   func displayLoginResult(viewModel: Login.LoginModel.ViewModel)
 }
@@ -72,14 +73,25 @@ class LoginViewController: UIViewController, LoginDisplayLogic, UITextFieldDeleg
   override func viewDidLoad()
   {
     super.viewDidLoad()
+    
     warningLabel.isHidden = true
     username.delegate = self
     password.delegate = self
-//    username.text = UserPersistance().getUserName()
+
   }
     
     override func viewWillAppear(_ animated: Bool) {
-        username.text = UserPersistance().getUserName()
+        fetchPreviousUserDetails()
+    }
+    
+    //MARK: Get previous User Details
+    func fetchPreviousUserDetails(){
+        let request = Login.FetchModel.Request()
+        interactor?.fetchUser(request: request)
+    }
+    
+    func displayFetchUserResult(viewModel: Login.FetchModel.ViewModel){
+        username.text = viewModel.user
     }
     
   @IBOutlet weak var username: UITextField!
@@ -95,25 +107,31 @@ class LoginViewController: UIViewController, LoginDisplayLogic, UITextFieldDeleg
  // MARK: Validation
     
   func validate(){
-    guard let userName = username.text, !userName.isEmpty else{
-        warningLabel.isHidden = false
-        if password.text!.isEmpty {
-            warningLabel.text = "Please enter Username & Password"
+    if(username != nil){
+        guard let userName = username.text , !userName.isEmpty else{
+            warningLabel.isHidden = false
+            if password.text!.isEmpty {
+                warningLabel.text = "Please enter Username & Password"
+            }
+            else{
+                warningLabel.text = "User field cannot be empty"
+            }
+            utils.hideActivityIndicator(view: self.view)
+            return
         }
-        else{
-            warningLabel.text = "User field cannot be empty"
+        guard let passwordValue = password.text, !passwordValue.isEmpty else{
+            warningLabel.isHidden = false
+            warningLabel.text = "Password field cannot be empty"
+            utils.hideActivityIndicator(view: self.view)
+            return
         }
-        utils.hideActivityIndicator(view: self.view)
-        return
+        let request = Login.ValidationModel.Request(user: userName, password: passwordValue)
+        interactor?.validateInputs(request: request)
     }
-    guard let passwordValue = password.text, !passwordValue.isEmpty else{
-        warningLabel.isHidden = false
-        warningLabel.text = "Password field cannot be empty"
-        utils.hideActivityIndicator(view: self.view)
-        return
+    else{
+        let request = Login.ValidationModel.Request(user: "", password: "")
+        interactor?.validateInputs(request: request)
     }
-    let request = Login.ValidationModel.Request(user: userName, password: passwordValue)
-    interactor?.validateInputs(request: request)
   }
     
   func ValidationResult(viewModel: Login.ValidationModel.ViewModel)
