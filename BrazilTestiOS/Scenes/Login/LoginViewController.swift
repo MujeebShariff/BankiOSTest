@@ -179,8 +179,11 @@ class LoginViewController: UIViewController, LoginDisplayLogic, UITextFieldDeleg
         password.text = ""
         performSegue(withIdentifier: "GoToHome", sender: nil)
     } else {
+        warningLabel.isHidden = false
+        warningLabel.text = viewModel.loginResponse.error.errorMessage
         username.text = nil
         password.text = nil
+        password.resignFirstResponder()
     }
   }
     

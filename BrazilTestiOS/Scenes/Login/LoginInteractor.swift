@@ -62,10 +62,15 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore
             
             if(success){
                 self.userPersistance.saveUserId(userId: "\(response!.userAccount.userId)", userName: user)
+                let response = Login.LoginModel.Response(success: success, loginResponse: response!)
+                self.userDetails = response.loginResponse.userAccount
+                self.presenter?.presentLoginResult(response: response)
             }
-            let response = Login.LoginModel.Response(success: success, loginResponse: response!)
-            self.userDetails = response.loginResponse.userAccount
-            self.presenter?.presentLoginResult(response: response)
+            else{
+                let response = Login.LoginModel.Response(success: success, loginResponse: response ?? LoginResponse(userAccount: UserAccount(userId: -1, name: "", bankAccount: "", agency: "", balance: nil), error: ErrorModel(code: -1, message: error!.localizedDescription)))
+                self.userDetails = response.loginResponse.userAccount
+                self.presenter?.presentLoginResult(response: response)
+            }
         }
     }
 }

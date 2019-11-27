@@ -42,7 +42,8 @@ class LoginPresenter: LoginPresentationLogic
 
   func presentLoginResult(response: Login.LoginModel.Response)
   {
-    let viewModel = Login.LoginModel.ViewModel(success: response.success, loginResponse: response.loginResponse)
+    var viewModel = Login.LoginModel.ViewModel(success: response.success, loginResponse: response.loginResponse)
+    viewModel.loginResponse.error.errorMessage += "! Please try again"
     viewController?.displayLoginResult(viewModel: viewModel)
   }
 }

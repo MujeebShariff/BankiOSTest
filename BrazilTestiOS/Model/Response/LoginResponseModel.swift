@@ -10,19 +10,19 @@ import Foundation
 
 struct LoginResponse: Codable {
     let userAccount: UserAccount
-    let error: ErrorModel
+    var error: ErrorModel
 }
 
 struct UserAccount: Codable {
     let userId: Int
-    let name, bankAccount, agency: String
-    let balance: Double
+    let name, bankAccount, agency: String?
+    let balance: Double?
     
 }
 
 struct ErrorModel: Codable {
     let code: Int
-    let errorMessage: String
+    var errorMessage: String
     
     init(from decoder: Decoder) throws{
         let container = try decoder.container(keyedBy: CodingKeys.self)

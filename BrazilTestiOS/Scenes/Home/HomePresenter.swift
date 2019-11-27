@@ -35,9 +35,9 @@ class HomePresenter: HomePresentationLogic
   
     func presentAccountDetails(response: Home.HomeData.Response) {
         let name = response.accountDetails.name
-        let account = response.accountDetails.bankAccount + " / " + response.accountDetails.agency
+        let account = response.accountDetails.bankAccount! + " / " + response.accountDetails.agency!
         let balance = response.accountDetails.balance
-        let viewModel = Home.HomeData.ViewModel(name: name, accountNumber: account, balance: balance)
+        let viewModel = Home.HomeData.ViewModel(name: name!, accountNumber: account, balance: balance!)
         viewController?.displayUserDetails(viewModel: viewModel)
     }
     

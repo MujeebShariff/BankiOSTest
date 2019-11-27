@@ -31,7 +31,7 @@ enum Login
     struct ViewModel
     {
         let success: Bool
-        let loginResponse: LoginResponse
+        var loginResponse: LoginResponse
     }
   }
     
