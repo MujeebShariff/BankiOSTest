@@ -12,36 +12,29 @@
 
 import UIKit
 
-protocol LoginPresentationLogic
-{
-    func presentFetchUserResult(response: Login.FetchModel.Response)
+protocol LoginPresentationLogic {
+  func presentFetchUserResult(response: Login.FetchModel.Response)
   func presentValidationResult(response: Login.ValidationModel.Response)
   func presentLoginResult(response: Login.LoginModel.Response)
 }
 
-class LoginPresenter: LoginPresentationLogic
-{
+class LoginPresenter: LoginPresentationLogic {
   weak var viewController: LoginDisplayLogic?
   
-   // MARK: Fetch Previous User
-    func presentFetchUserResult(response: Login.FetchModel.Response)
-    {
-        let viewModel = Login.FetchModel.ViewModel(user: response.user)
-        viewController?.displayFetchUserResult(viewModel: viewModel)
-    }
-    
-  // MARK: Validation
+  // MARK: - Fetch Previous User
+  func presentFetchUserResult(response: Login.FetchModel.Response) {
+    let viewModel = Login.FetchModel.ViewModel(user: response.user)
+    viewController?.displayFetchUserResult(viewModel: viewModel)
+  }
   
-  func presentValidationResult(response: Login.ValidationModel.Response)
-  {
+  // MARK: - Validation
+  func presentValidationResult(response: Login.ValidationModel.Response) {
     let viewModel = Login.ValidationModel.ViewModel(validUser: response.validUser, validPassword: response.validPassword)
     viewController?.ValidationResult(viewModel: viewModel)
   }
-    
-  // MARK: Login
-
-  func presentLoginResult(response: Login.LoginModel.Response)
-  {
+  
+  // MARK: - Login - format login results & send to the viewController
+  func presentLoginResult(response: Login.LoginModel.Response) {
     var viewModel = Login.LoginModel.ViewModel(success: response.success, loginResponse: response.loginResponse)
     viewModel.loginResponse.error.errorMessage += "! Please try again"
     viewController?.displayLoginResult(viewModel: viewModel)

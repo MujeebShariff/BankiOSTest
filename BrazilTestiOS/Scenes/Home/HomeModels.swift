@@ -12,41 +12,32 @@
 
 import UIKit
 
-enum Home
-{
-  // MARK: Use cases
+enum Home {
+  // MARK: - Use cases
   
-  enum HomeData
-  {
-    struct Request
-    {
+  enum HomeData {
+    struct Request {
     }
-    struct Response
-    {
-        var accountDetails: UserAccount
+    struct Response {
+      var accountDetails: UserAccount
     }
-    struct ViewModel
-    {
-        let name: String
-        let accountNumber: String
-        let balance: Double
+    struct ViewModel {
+      let name: String
+      let accountNumber: String
+      let balance: Double
     }
   }
-    
-    enum GetStatementList
-    {
-        struct Request
-        {
-        }
-        struct Response
-        {
-            var success: Bool
-            var statements: [StatementList]?
-        }
-        struct ViewModel
-        {
-            var success: Bool
-            let statements: [StatementList]?
-        }
+  
+  enum GetStatementList {
+    struct Request {
     }
+    struct Response {
+      var success: Bool
+      var statements: [StatementList]?
+    }
+    struct ViewModel {
+      var success: Bool
+      let statements: [StatementList]?
+    }
+  }
 }

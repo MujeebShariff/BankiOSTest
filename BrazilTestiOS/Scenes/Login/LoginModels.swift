@@ -12,59 +12,46 @@
 
 import UIKit
 
-enum Login
-{
-  // MARK: Use cases
-  
-  enum LoginModel
-  {
-    struct Request
-    {
-        var user: String?
-        var password: String?
+enum Login {
+  // MARK: - Use cases
+  enum LoginModel {
+    struct Request {
+      var user: String?
+      var password: String?
     }
-    struct Response
-    {
-        var success: Bool
-        var loginResponse: LoginResponse
+    struct Response {
+      var success: Bool
+      var loginResponse: LoginResponse
     }
-    struct ViewModel
-    {
-        let success: Bool
-        var loginResponse: LoginResponse
+    struct ViewModel {
+      let success: Bool
+      var loginResponse: LoginResponse
     }
   }
-    
-    enum FetchModel
-    {
-      struct Request
-      {
-      }
-      struct Response
-      {
-          var user: String?
-      }
-      struct ViewModel
-      {
-          var user: String?
-      }
+  
+  enum FetchModel {
+    struct Request {
     }
-    
-    enum ValidationModel {
-        struct Request
-        {
-            var user: String?
-            var password: String?
-        }
-        struct Response
-        {
-            var validUser: Bool
-            var validPassword: Bool
-        }
-        struct ViewModel
-        {
-            var validUser: Bool
-            var validPassword: Bool
-        }
+    struct Response {
+      var user: String?
     }
+    struct ViewModel {
+      var user: String?
+    }
+  }
+  
+  enum ValidationModel {
+    struct Request {
+      var user: String?
+      var password: String?
+    }
+    struct Response {
+      var validUser: Bool
+      var validPassword: Bool
+    }
+    struct ViewModel {
+      var validUser: Bool
+      var validPassword: Bool
+    }
+  }
 }

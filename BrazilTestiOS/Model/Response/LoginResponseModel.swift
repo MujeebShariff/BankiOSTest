@@ -9,28 +9,27 @@
 import Foundation
 
 struct LoginResponse: Codable {
-    let userAccount: UserAccount
-    var error: ErrorModel
+  let userAccount: UserAccount
+  var error: ErrorModel
 }
 
 struct UserAccount: Codable {
-    let userId: Int
-    let name, bankAccount, agency: String?
-    let balance: Double?
-    
+  let userId: Int
+  let name, bankAccount, agency: String?
+  let balance: Double?
 }
 
 struct ErrorModel: Codable {
-    let code: Int
-    var errorMessage: String
-    
-    init(from decoder: Decoder) throws{
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        code = (try container.decodeIfPresent(Int.self, forKey: .code)) ?? -1
-        errorMessage = (try container.decodeIfPresent(String.self, forKey: .errorMessage)) ?? "NA"
-    }
-    init(code: Int, message: String) {
-        self.code = code
-        self.errorMessage = message
-    }
+  let code: Int
+  var errorMessage: String
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    code = (try container.decodeIfPresent(Int.self, forKey: .code)) ?? -1
+    errorMessage = (try container.decodeIfPresent(String.self, forKey: .errorMessage)) ?? "NA"
+  }
+  init(code: Int, message: String) {
+    self.code = code
+    self.errorMessage = message
+  }
 }

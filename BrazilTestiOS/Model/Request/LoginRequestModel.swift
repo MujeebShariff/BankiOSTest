@@ -9,8 +9,6 @@
 import Foundation
 
 struct LoginRequest: Codable {
-    
-    let user: String
-    let password: String
-    
+  let user: String
+  let password: String    
 }

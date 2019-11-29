@@ -12,38 +12,30 @@
 
 import UIKit
 
-protocol HomeDisplayLogic: class
-{
-    func displayUserDetails(viewModel: Home.HomeData.ViewModel)
-    func displayAccountStatementList(viewModel: Home.GetStatementList.ViewModel)
-    func doLogout()
+protocol HomeDisplayLogic: class {
+  func displayUserDetails(viewModel: Home.HomeData.ViewModel)
+  func displayAccountStatementList(viewModel: Home.GetStatementList.ViewModel)
+  func doLogout()
 }
 
-class HomeViewController: UIViewController, HomeDisplayLogic, UITableViewDataSource, UITableViewDelegate
-{
-    
+class HomeViewController: UIViewController, HomeDisplayLogic {
   var interactor: HomeBusinessLogic?
   var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
   var statementList: [StatementList] = []
-    
-  // MARK: Object lifecycle
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
-  {
+  // MARK: - Object lifecycle
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
   }
   
-  required init?(coder aDecoder: NSCoder)
-  {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     setup()
   }
   
-  // MARK: Setup
-  
-  private func setup()
-  {
+  // MARK: - Setup
+  private func setup() {
     let viewController = self
     let interactor = HomeInteractor()
     let presenter = HomePresenter()
@@ -56,10 +48,8 @@ class HomeViewController: UIViewController, HomeDisplayLogic, UITableViewDataSou
     router.dataStore = interactor
   }
   
-  // MARK: Routing
-  
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-  {
+  // MARK: - Routing
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let scene = segue.identifier {
       let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
       if let router = router, router.responds(to: selector) {
@@ -68,108 +58,105 @@ class HomeViewController: UIViewController, HomeDisplayLogic, UITableViewDataSou
     }
   }
   
-  // MARK: View lifecycle
-  
-  override func viewDidLoad()
-  {
+  // MARK: - View lifecycle
+  override func viewDidLoad() {
     super.viewDidLoad()
     self.transactionsTableView.sectionHeaderHeight = 50
     getUserDetails()
     getStatements()
   }
   
-  // MARK: Outlets
+  // MARK: - Outlets
+  @IBOutlet weak var accountHolderName: UILabel!
+  @IBOutlet weak var accountNumber: UILabel!
+  @IBOutlet weak var accountBalance: UILabel!
+  @IBOutlet weak var transactionsTableView: UITableView!
   
-    @IBOutlet weak var accountHolderName: UILabel!
-    @IBOutlet weak var accountNumber: UILabel!
-    @IBOutlet weak var accountBalance: UILabel!
-    @IBOutlet weak var transactionsTableView: UITableView!
+  // MARK: - get user details
   
-    // MARK: User Details
-    
-    func getUserDetails()
-    {
-      let request = Home.HomeData.Request()
-      interactor?.getUserData(request: request)
+  // call interactor function getUserData(request:) to fetch user details
+  func getUserDetails() {
+    let request = Home.HomeData.Request()
+    interactor?.getUserData(request: request)
+  }
+  
+  // display user details on the screen
+  func displayUserDetails(viewModel: Home.HomeData.ViewModel) {
+    accountHolderName.text = viewModel.name
+    accountNumber.text = viewModel.accountNumber
+    accountBalance.text = "R$"+"\(viewModel.balance)"
+  }
+  
+  // MARK: - Statement List
+  
+  // call interactor function getStatementList(request:) to fetch account statement
+  func getStatements() {
+    let request = Home.GetStatementList.Request()
+    interactor?.getStatementList(request: request)
+  }
+  
+  // display statement list on the screen
+  func displayAccountStatementList(viewModel: Home.GetStatementList.ViewModel) {
+    if let statements = viewModel.statements {
+      statementList = statements
+      transactionsTableView.reloadData()
     }
-    
-    func displayUserDetails(viewModel: Home.HomeData.ViewModel) {
-        accountHolderName.text = viewModel.name
-        accountNumber.text = viewModel.accountNumber
-        accountBalance.text = "R$"+"\(viewModel.balance)"
-    }
-    
-    // MARK: Statement List
-    
-    func getStatements()
-    {
-      let request = Home.GetStatementList.Request()
-      interactor?.getStatementList(request: request)
-    }
-    
-    func displayAccountStatementList(viewModel: Home.GetStatementList.ViewModel) {
-        if let statements = viewModel.statements {
-            statementList = statements
-            transactionsTableView.reloadData()
-        }
-    }
-    
-    // MARK: Logout
-    
-    @IBAction func logoutBtnClicked(_ sender: Any) {
-        logout()
-    }
-    
-    func logout() {
-        interactor?.logout()
-    }
-    
-    func doLogout(){
-        performSegue(withIdentifier: "Logout", sender: nil)
-        // dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: - TableView
+  }
+  
+  // MARK: - Logout
+  
+  // call viewController function logout()
+  @IBAction func logoutBtnClicked(_ sender: Any) {
+    logout()
+  }
+  
+  // call interactor function logout() to fetch account statement
+  func logout() {
+    interactor?.logout()
+  }
+  
+  // go back to login screen
+  func doLogout() {
+    performSegue(withIdentifier: "Logout", sender: nil)
+  }
+}
 
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
-      return 1
-    }
+// MARK: - TableView delegates
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    return "Recentes"
+  }
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 50))
+    headerView.backgroundColor = UIColor.white
+    let label = UILabel(frame: CGRect(x: 18, y: 15, width: 100, height: 20))
+    label.text = "Recentes"
+    label.font = UIFont(name: "HelveticaNeue", size: 17)
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Recentes"
-    }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-    {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 50))
-            headerView.backgroundColor = UIColor.white
-        let label = UILabel(frame: CGRect(x: 18, y: 15, width: 100, height: 20))
-        label.text = "Recentes"
-        label.font = UIFont(name: "HelveticaNeue", size: 17)
-
-        label.textColor = UIColor(red: 72/255, green: 84/255, blue: 101/255, alpha: 1)
-
-        headerView.addSubview(label)
-        return headerView
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-      return statementList.count
-    }
+    label.textColor = UIColor(red: 72/255, green: 84/255, blue: 101/255, alpha: 1)
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-      let displayedTransaction = statementList[indexPath.row]
-        var cell = tableView.dequeueReusableCell(withIdentifier: "TransactionTVCell", for: indexPath) as? TransactionTableViewCell
-      if cell == nil {
-        cell = UITableViewCell(style: .value1, reuseIdentifier: "TransactionTVCell") as? TransactionTableViewCell
-      }
-        
-        cell?.titleLabel.text = displayedTransaction.title
-        cell?.descriptionLabel.text = displayedTransaction.desc
-        cell?.dateLabel.text = displayedTransaction.date
-        cell?.valueLabel.text = "R$"+String(displayedTransaction.value)
-      return cell!
+    headerView.addSubview(label)
+    return headerView
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return statementList.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let displayedTransaction = statementList[indexPath.row]
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionTVCell", for: indexPath) as? TransactionTableViewCell else {
+      let cell = TransactionTableViewCell(style: .value1, reuseIdentifier: "TransactionTVCell")
+      return cell
     }
+    cell.titleLabel.text = displayedTransaction.title
+    cell.descriptionLabel.text = displayedTransaction.desc
+    cell.dateLabel.text = displayedTransaction.date
+    cell.valueLabel.text = "R$"+String(displayedTransaction.value)
+    return cell
+  }
 }

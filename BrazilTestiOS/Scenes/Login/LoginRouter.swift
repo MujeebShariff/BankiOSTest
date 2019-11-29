@@ -12,49 +12,40 @@
 
 import UIKit
 
-@objc protocol LoginRoutingLogic
-{
+@objc protocol LoginRoutingLogic {
   func routeToGoToHome(segue: UIStoryboardSegue?)
 }
 
-protocol LoginDataPassing
-{
+protocol LoginDataPassing {
   var dataStore: LoginDataStore? { get }
 }
 
-class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing
-{
+class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
   weak var viewController: LoginViewController?
   var dataStore: LoginDataStore?
   
-  // MARK: Routing
-  
-    func routeToGoToHome(segue: UIStoryboardSegue?) {
-        if let segue = segue {
-          let destinationVC = segue.destination as! HomeViewController
-          var destinationDS = destinationVC.router!.dataStore!
-          passDataToHome(source: dataStore!, destination: &destinationDS)
-        } else {
-          let storyboard = UIStoryboard(name: "Main", bundle: nil)
-          let destinationVC = storyboard.instantiateViewController(withIdentifier: "HomeVC") as! HomeViewController
-          var destinationDS = destinationVC.router!.dataStore!
-          passDataToHome(source: dataStore!, destination: &destinationDS)
-          navigateToHome(source: viewController!, destination: destinationVC)
-        }
+  // MARK: - Routing to home screen
+  func routeToGoToHome(segue: UIStoryboardSegue?) {
+    if let segue = segue {
+      let destinationVC = segue.destination as! HomeViewController
+      var destinationDS = destinationVC.router!.dataStore!
+      passDataToHome(source: dataStore!, destination: &destinationDS)
+    } else {
+      let storyboard = UIStoryboard(name: "Main", bundle: nil)
+      let destinationVC = storyboard.instantiateViewController(withIdentifier: "HomeVC") as! HomeViewController
+      var destinationDS = destinationVC.router!.dataStore!
+      passDataToHome(source: dataStore!, destination: &destinationDS)
+      navigateToHome(source: viewController!, destination: destinationVC)
     }
-    
-
-  // MARK: Navigation
+  }    
   
-  func navigateToHome(source: LoginViewController, destination: HomeViewController)
-  {
+  // MARK: - Navigation
+  func navigateToHome(source: LoginViewController, destination: HomeViewController) {
     source.show(destination, sender: nil)
   }
   
-  // MARK: Passing data
-  
-  func passDataToHome(source: LoginDataStore, destination: inout HomeDataStore)
-  {
+  // MARK: - Passing data  
+  func passDataToHome(source: LoginDataStore, destination: inout HomeDataStore) {
     destination.userDetails = source.userDetails
   }
 }

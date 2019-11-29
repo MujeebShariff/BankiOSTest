@@ -12,46 +12,39 @@
 
 import UIKit
 
-protocol HomeBusinessLogic
-{
-    func getUserData(request: Home.HomeData.Request)
-    func getStatementList(request: Home.GetStatementList.Request)
-    func logout()
+protocol HomeBusinessLogic {
+  func getUserData(request: Home.HomeData.Request)
+  func getStatementList(request: Home.GetStatementList.Request)
+  func logout()
 }
 
-protocol HomeDataStore
-{
-//  var name: String { get set }
-    var userDetails: UserAccount! { get set }
+protocol HomeDataStore {
+  var userDetails: UserAccount! { get set }
 }
 
-class HomeInteractor: HomeBusinessLogic, HomeDataStore
-{
-    
+class HomeInteractor: HomeBusinessLogic, HomeDataStore {
   var presenter: HomePresentationLogic?
   var worker = HomeWorker()
-  //var name: String = ""
   var userDetails: UserAccount!
-    
-  // MARK: Do something
-
-    func getUserData(request: Home.HomeData.Request) {
-        let response = Home.HomeData.Response(accountDetails: userDetails)
-        presenter?.presentAccountDetails(response: response)
+  
+  // create a response variable containing user details and send to presenter for formatting
+  func getUserData(request: Home.HomeData.Request) {
+    let response = Home.HomeData.Response(accountDetails: userDetails)
+    presenter?.presentAccountDetails(response: response)
+  }
+  
+  // create a response variable containing statements and send to presenter for formatting
+  func getStatementList(request: Home.GetStatementList.Request) {
+    worker.getStatements{ (success, statements, error) in
+      if success {
+        let response = Home.GetStatementList.Response(success: success, statements: statements?.statementList)
+        self.presenter?.presentStatementDetails(response: response)
+      }
     }
-    
-    func getStatementList(request: Home.GetStatementList.Request) { 
-        
-        worker.getStatements{ (success, statements, error) in
-            
-            if success {
-                let response = Home.GetStatementList.Response(success: success, statements: statements?.statementList)
-                self.presenter?.presentStatementDetails(response: response)
-            }
-        }
-    }
-    
-    func logout() {
-        presenter?.logout()
-    }
+  }
+  
+  // MARK: - call presenter's logout() method
+  func logout() {
+    presenter?.logout()
+  }
 }
