@@ -1,0 +1,17 @@
+//
+//  Localizable.strings
+//  BrazilTestiOS
+//
+//  Created by Mujeeb Ulla Shariff on 29/11/19.
+//  Copyright © 2019 Mujeeb Ulla Shariff. All rights reserved.
+//
+
+"User" = "User";
+"password" = "password";
+"Login" = "Login";
+"Please enter Username & Password" = "Please enter Username & Password";
+"User field cannot be empty" = "User field cannot be empty";
+"Password field cannot be empty" = "Password field cannot be empty";
+"Please enter valid password" = "Please enter valid password";
+"Please enter valid username" = "Please enter valid username";
+"Please enter valid username & password" = "Please enter valid username & password";

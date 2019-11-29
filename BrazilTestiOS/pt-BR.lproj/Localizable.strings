@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  BrazilTestiOS
+
+  Created by Mujeeb Ulla Shariff on 29/11/19.
+  Copyright © 2019 Mujeeb Ulla Shariff. All rights reserved.
+*/
+
+"Please enter Username & Password" = "Digite o nome de usuário e a senha";
+"User field cannot be empty" = "O campo do usuário não pode estar vazio";
+"Password field cannot be empty" = "O campo da senha não pode estar vazio";
+"Please enter valid password" = "Digite uma senha válida";
+"Please enter valid username" = "Digite um nome de usuário válido";
+"Please enter valid username & password" = "Digite um nome de usuário e senha válidos";

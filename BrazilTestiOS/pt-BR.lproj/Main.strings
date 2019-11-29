@@ -1,0 +1,39 @@
+
+/* Class = "UILabel"; text = "Saldo\n\n"; ObjectID = "3eQ-uZ-456"; */
+"3eQ-uZ-456.text" = "Saldo\n\n";
+
+/* Class = "UILabel"; text = "Conta"; ObjectID = "6Ej-Z7-Cuy"; */
+"6Ej-Z7-Cuy.text" = "Conta";
+
+/* Class = "UILabel"; text = "Conta de luz"; ObjectID = "Ghi-aU-KvR"; */
+"Ghi-aU-KvR.text" = "Conta de luz";
+
+/* Class = "UILabel"; text = "12/12/2018"; ObjectID = "Jrv-5h-cTa"; */
+"Jrv-5h-cTa.text" = "12/12/2018";
+
+/* Class = "UITextField"; placeholder = "User"; ObjectID = "JvR-p8-Zch"; */
+"JvR-p8-Zch.placeholder" = "Do utilizador";
+
+/* Class = "UILabel"; text = "2050 / 01.111222-4"; ObjectID = "K3d-Vi-hsl"; */
+"K3d-Vi-hsl.text" = "2050 / 01.111222-4";
+
+/* Class = "UILabel"; text = "R$1.000,00"; ObjectID = "UZI-c1-j25"; */
+"UZI-c1-j25.text" = "R$1.000,00";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Ygr-zo-QYK"; */
+"Ygr-zo-QYK.text" = "Rótulo";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "fIK-Cc-1k1"; */
+"fIK-Cc-1k1.normalTitle" = "Entrar";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "s63-OF-KjU"; */
+"s63-OF-KjU.placeholder" = "Senha";
+
+/* Class = "UILabel"; text = "Jose da Silva Teste"; ObjectID = "sHU-D1-oln"; */
+"sHU-D1-oln.text" = "Jose da Silva Teste";
+
+/* Class = "UILabel"; text = "R$1.000,00"; ObjectID = "uN2-if-V5B"; */
+"uN2-if-V5B.text" = "R$1.000,00";
+
+/* Class = "UILabel"; text = "Pagamento"; ObjectID = "vbN-4V-vXK"; */
+"vbN-4V-vXK.text" = "Pagamento";

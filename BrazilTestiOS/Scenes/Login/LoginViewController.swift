@@ -107,16 +107,16 @@ class LoginViewController: UIViewController, LoginDisplayLogic {
       guard let userName = username.text, !userName.isEmpty else {
         warningLabel.isHidden = false
         if password.text!.isEmpty {
-          warningLabel.text = "Please enter Username & Password"
+          warningLabel.text = NSLocalizedString("Please enter Username & Password", comment: "")
         } else {
-          warningLabel.text = "User field cannot be empty"
+          warningLabel.text = NSLocalizedString("User field cannot be empty", comment: "")
         }
         utils.hideActivityIndicator(view: self.view)
         return
       }
       guard let passwordValue = password.text, !passwordValue.isEmpty else {
         warningLabel.isHidden = false
-        warningLabel.text = "Password field cannot be empty"
+        warningLabel.text = NSLocalizedString("Password field cannot be empty", comment: "")
         utils.hideActivityIndicator(view: self.view)
         return
       }
@@ -135,11 +135,11 @@ class LoginViewController: UIViewController, LoginDisplayLogic {
     } else {
       warningLabel.isHidden = false
       if viewModel.validUser && !viewModel.validPassword {
-        warningLabel.text = "Please enter valid password"
+        warningLabel.text = NSLocalizedString("Please enter valid password", comment: "")
       } else if !viewModel.validUser && viewModel.validPassword {
-        warningLabel.text = "Please enter valid username"
+        warningLabel.text = NSLocalizedString("Please enter valid username", comment: "")
       } else {
-        warningLabel.text = "Please enter valid username & password"
+        warningLabel.text = NSLocalizedString("Please enter valid username & password", comment: "")
       }
     }
   }
