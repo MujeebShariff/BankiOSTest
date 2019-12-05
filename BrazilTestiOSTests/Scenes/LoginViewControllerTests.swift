@@ -176,12 +176,12 @@ class LoginViewControllerTests: XCTestCase {
     // Given
     let loginBusinessLogicSpy = LoginBusinessLogicSpy()
     sut.interactor = loginBusinessLogicSpy
-          
+    
     // When
     loadView()
     sut.username.text = Seeds.loginData.userName
     sut.password.text = Seeds.loginData.password
-      
+    
     sut.loginBtnClicked(self)
     
     // Then
@@ -249,11 +249,11 @@ class LoginViewControllerTests: XCTestCase {
     let loginRouterSpy = LoginRouterSpy()
     sut.router = loginRouterSpy
     let viewModel = Login.LoginModel.ViewModel(success: true, loginResponse: LoginResponse(userAccount: Seeds.Accounts.Jose, error: ErrorModel(code: -1, message: "NA")))
-
+    
     //When
     loadView()
     sut.displayLoginResult(viewModel: viewModel)
-
+    
     //Then
     XCTAssertTrue(loginRouterSpy.routeToGoToHomeCalled, "Segue GoToHome should be called")
     XCTAssert(sut.warningLabel.isHidden, "Warning label should be hidden")

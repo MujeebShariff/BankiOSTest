@@ -25,5 +25,5 @@ public class TransactionTableViewCell: UITableViewCell {
     cardView.layer.shadowRadius = 5
     cardView.layer.cornerRadius = 6
   }
-
+  
 }
