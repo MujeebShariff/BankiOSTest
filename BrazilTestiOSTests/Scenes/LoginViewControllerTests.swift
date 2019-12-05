@@ -74,17 +74,52 @@ class LoginViewControllerTests: XCTestCase {
     
   }
   
-  class LoginRouterSpy: LoginRouter {
+  class LoginWorkerSpy: LoginWorker {
     // MARK: Method call expectations
     
-    var routeToGoToHomeCalled = false
+    var validateUserCalled = false
+    var validatePasswordCalled = false
+    var loginCalled = false
     
+    // MARK: Spied methods
+    
+    override func validateUser(username: String) -> Bool {
+      validateUserCalled = true
+      return true
+    }
+    
+    override func validatePassword(password: String) -> Bool {
+      validatePasswordCalled = true
+      return true
+    }
+    
+    override func login(username: String, password: String, completion: @escaping (Bool, LoginResponse?, Error?) -> Void) {
+      loginCalled = true
+      completion(true, LoginResponse(userAccount: Seeds.Accounts.Jose, error: ErrorModel(code: 1, message: "No Error")),nil)
+    }
+  }
+  
+  class homeViewControllerSpy: HomeViewController{
+    // MARK: Method call expectations
+    
+    var viewDidLoadCalled = false
+    
+    // MARK: Spied methods
+    
+    override func viewDidLoad() {
+      viewDidLoadCalled = true
+    }
+  }
+  
+  class LoginRouterSpy: LoginRouter {
+    var dataStoreCustom: LoginDataStore!
+    
+    var routeToGoToHomeCalled = false
     // MARK: Spied methods
     
     override func routeToGoToHome(segue: UIStoryboardSegue?) {
       routeToGoToHomeCalled = true
     }
-    
   }
   
   //MARK: -Test UserDefaults Fetch
@@ -141,10 +176,12 @@ class LoginViewControllerTests: XCTestCase {
     // Given
     let loginBusinessLogicSpy = LoginBusinessLogicSpy()
     sut.interactor = loginBusinessLogicSpy
-    //        sut.username.text = Seeds.loginData.userName
-    //        sut.password.text = Seeds.loginData.password
-    
+          
     // When
+    loadView()
+    sut.username.text = Seeds.loginData.userName
+    sut.password.text = Seeds.loginData.password
+      
     sut.loginBtnClicked(self)
     
     // Then
@@ -182,8 +219,6 @@ class LoginViewControllerTests: XCTestCase {
   
   func testDisplayMessageOnPasswordValidationFailure() {
     //Given
-    let loginBusinessLogicSpy = LoginBusinessLogicSpy()
-    sut.interactor = loginBusinessLogicSpy
     let viewModel = Login.ValidationModel.ViewModel(validUser: true, validPassword: false)
     
     //When
@@ -207,6 +242,73 @@ class LoginViewControllerTests: XCTestCase {
     
     //Then
     XCTAssertEqual(sut.warningLabel.text, "Please enter valid username & password", "loginButtonTapped(_:) should display a warning message when both username & password are wrong")
+  }
+  
+  func testPerformSegueOnSuccessfullLogin() {
+    //Given
+    let loginRouterSpy = LoginRouterSpy()
+    sut.router = loginRouterSpy
+    let viewModel = Login.LoginModel.ViewModel(success: true, loginResponse: LoginResponse(userAccount: Seeds.Accounts.Jose, error: ErrorModel(code: -1, message: "NA")))
+
+    //When
+    loadView()
+    sut.displayLoginResult(viewModel: viewModel)
+
+    //Then
+    XCTAssertTrue(loginRouterSpy.routeToGoToHomeCalled, "Segue GoToHome should be called")
+    XCTAssert(sut.warningLabel.isHidden, "Warning label should be hidden")
+  }
+  
+  func testDisplayErrorMessageOnLoginFailure() {
+    //Given
+    let loginBusinessLogicSpy = LoginBusinessLogicSpy()
+    sut.interactor = loginBusinessLogicSpy
     
+    //When
+    loadView()
+    let viewModel = Login.LoginModel.ViewModel(success: false, loginResponse: LoginResponse(userAccount: UserAccount(userId: 1, name: "", bankAccount: "", agency: "", balance: -50), error: ErrorModel(code: 1009, message: "The Internet connection appears to be offline.! Please try again")))
+    sut.displayLoginResult(viewModel: viewModel)
+    
+    //Then
+    XCTAssertEqual(sut.warningLabel.text, "The Internet connection appears to be offline.! Please try again", "loginButtonTapped(_:) should display a warning message when the internet connection goes offline")
+  }
+  
+  func testDisplayMessageOnEmptyUserNameAndPassword() {
+    //Given
+    
+    //When
+    loadView()
+    sut.username.text = ""
+    sut.password.text = ""
+    sut.loginBtnClicked(self)
+    
+    //Then
+    XCTAssertEqual(sut.warningLabel.text, "Please enter Username & Password", "loginButtonTapped(_:) should display a warning message when both username & password fields are empty")
+  }
+  
+  func testDisplayMessageOnEmptyUserName() {
+    //Given
+    
+    //When
+    loadView()
+    sut.username.text = ""
+    sut.password.text = "asdf"
+    sut.loginBtnClicked(self)
+    
+    //Then
+    XCTAssertEqual(sut.warningLabel.text, "User field cannot be empty", "loginButtonTapped(_:) should display a warning message when username field is empty")
+  }
+  
+  func testDisplayMessageOnEmptyPassword() {
+    //Given
+    
+    //When
+    loadView()
+    sut.username.text = "qwer"
+    sut.password.text = ""
+    sut.loginBtnClicked(self)
+    
+    //Then
+    XCTAssertEqual(sut.warningLabel.text, "Password field cannot be empty", "loginButtonTapped(_:) should display a warning message when password field is empty")
   }
 }

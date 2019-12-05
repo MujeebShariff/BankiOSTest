@@ -64,6 +64,7 @@ class HomeInteractorTests: XCTestCase {
     // MARK: Spied methods
     
     override func getStatements(completion: @escaping (Bool, Statement?, Error?) -> Void) {
+      super.getStatements{ (success, statements, error) in }
       getStatementsCalled = true
       completion(true,Statement(statementList: [ Seeds.Transactions.Statement1,Seeds.Transactions.Statement2,Seeds.Transactions.Statement3], error: ErrorModel(code: 1, message: "No Error")), nil)
     }

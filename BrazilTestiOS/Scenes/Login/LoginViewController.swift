@@ -103,29 +103,24 @@ class LoginViewController: UIViewController, LoginDisplayLogic {
   
   // Validation method
   func validate() {
-    if(username != nil) {
-      guard let userName = username.text, !userName.isEmpty else {
-        warningLabel.isHidden = false
-        if password.text!.isEmpty {
-          warningLabel.text = NSLocalizedString("Please enter Username & Password", comment: "")
-        } else {
-          warningLabel.text = NSLocalizedString("User field cannot be empty", comment: "")
-        }
-        utils.hideActivityIndicator(view: self.view)
-        return
+    guard let userName = username.text, !userName.isEmpty else {
+      warningLabel.isHidden = false
+      if password.text!.isEmpty {
+        warningLabel.text = NSLocalizedString("Please enter Username & Password", comment: "")
+      } else {
+        warningLabel.text = NSLocalizedString("User field cannot be empty", comment: "")
       }
-      guard let passwordValue = password.text, !passwordValue.isEmpty else {
-        warningLabel.isHidden = false
-        warningLabel.text = NSLocalizedString("Password field cannot be empty", comment: "")
-        utils.hideActivityIndicator(view: self.view)
-        return
-      }
-      let request = Login.ValidationModel.Request(user: userName, password: passwordValue)
-      interactor?.validateInputs(request: request)
-    } else {
-      let request = Login.ValidationModel.Request(user: "", password: "")
-      interactor?.validateInputs(request: request)
+      utils.hideActivityIndicator(view: self.view)
+      return
     }
+    guard let passwordValue = password.text, !passwordValue.isEmpty else {
+      warningLabel.isHidden = false
+      warningLabel.text = NSLocalizedString("Password field cannot be empty", comment: "")
+      utils.hideActivityIndicator(view: self.view)
+      return
+    }
+    let request = Login.ValidationModel.Request(user: userName, password: passwordValue)
+    interactor?.validateInputs(request: request)
   }
   
   // display validation results on the warning label

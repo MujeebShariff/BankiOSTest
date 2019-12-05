@@ -103,6 +103,7 @@ class HomeViewControllerTests: XCTestCase {
     XCTAssert(homeBusinessLogicSpy.getStatementListCalled, "Should get account statement when view loads")
   }
   
+  
   func testShouldLogoutOnLogoutButtonTap() {
     // Given
     let homeBusinessLogicSpy = HomeBusinessLogicSpy()

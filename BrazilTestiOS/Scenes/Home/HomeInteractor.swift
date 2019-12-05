@@ -29,7 +29,7 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore {
   
   // create a response variable containing user details and send to presenter for formatting
   func getUserData(request: Home.HomeData.Request) {
-    let response = Home.HomeData.Response(accountDetails: userDetails)
+    let response = Home.HomeData.Response(accountDetails: userDetails ?? UserAccount(userId: 1, name: "", bankAccount: "", agency: "", balance: -50))
     presenter?.presentAccountDetails(response: response)
   }
   

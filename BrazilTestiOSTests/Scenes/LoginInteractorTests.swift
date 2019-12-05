@@ -45,19 +45,22 @@ class LoginInteractorTests: XCTestCase {
     
     // MARK: Spied methods
     override func saveUserId(userId: String?, userName: String?) {
+      super.saveUserId(userId: userId, userName: userName)
       saveUserIdCalled = true
       self.userIdString = userId
       self.userNameString = userName
     }
     
     override func getUserId() -> String? {
+      let id = super.getUserId()
       getUserIdCalled = true
-      return ""
+      return id
     }
     
     override func getUserName() -> String? {
+      let userName = super.getUserId()
       getUserNameCalled = true
-      return ""
+      return userName
     }
   }
   
@@ -95,18 +98,28 @@ class LoginInteractorTests: XCTestCase {
     // MARK: Spied methods
     
     override func validateUser(username: String) -> Bool {
+      let result = super.validateUser(username: username)
       validateUserCalled = true
-      return true
+      return result
     }
     
     override func validatePassword(password: String) -> Bool {
+      let result = super.validatePassword(password: password)
       validatePasswordCalled = true
-      return true
+      return result
     }
     
     override func login(username: String, password: String, completion: @escaping (Bool, LoginResponse?, Error?) -> Void) {
+      super.login(username: username, password: password){_,_,_ in
+      }
       loginCalled = true
-      completion(true, LoginResponse(userAccount: Seeds.Accounts.Jose, error: ErrorModel(code: 1, message: "No Error")),nil)
+      if username == "InternetConnectionOffline" {
+        completion(false, LoginResponse(userAccount: UserAccount(userId: -1, name: "", bankAccount: "", agency: "", balance: nil), error: ErrorModel(code: -1, message: "The Internet connection appears to be offline.")),nil)
+      } else if username == "Timeout" {
+        completion(false, LoginResponse(userAccount: UserAccount(userId: -1, name: "", bankAccount: "", agency: "", balance: nil), error: ErrorModel(code: -1, message: "The request timed out.")),nil)
+      } else {
+        completion(true, LoginResponse(userAccount: Seeds.Accounts.Jose, error: ErrorModel(code: 1, message: "No Error")),nil)
+      }
     }
   }
   // MARK: - Tests
@@ -163,5 +176,49 @@ class LoginInteractorTests: XCTestCase {
     XCTAssert(userPersistanceSpy.saveUserIdCalled, "login() should save the user id to user defaults")
     XCTAssert(workerSpy.loginCalled, "login() should ask LoginWorker to fetch from Api")
     XCTAssert(loginPresentationLogicSpy.presentLoginResultCalled, "validateInputs() should ask presentor to format the Login response recieved from the Api")
+  }
+  
+  func testLoginShouldAskLoginWorkerToFetchFromApiAndSendOfflineErrorResponseToPresenterToFormatResult() {
+    // Given
+    let loginPresentationLogicSpy = LoginPresentationLogicSpy()
+    sut.presenter = loginPresentationLogicSpy
+    let workerSpy = LoginWorkerSpy()
+    sut.worker = workerSpy
+    let userPersistanceSpy = UserPersistanceSpy()
+    sut.userPersistance = userPersistanceSpy
+    
+    // When
+    let request = Login.LoginModel.Request(user: "InternetConnectionOffline", password: Seeds.loginData.password)
+    sut.login(request: request)
+    var errorMessage = String()
+    workerSpy.login(username: "InternetConnectionOffline", password: ""){ success, response, error in
+      errorMessage = (response?.error.errorMessage)!
+    }
+    // Then
+    XCTAssertFalse(userPersistanceSpy.saveUserIdCalled, "login() should save the user id to user defaults")
+    XCTAssert(workerSpy.loginCalled, "login() should ask LoginWorker to fetch from Api")
+    XCTAssertEqual(errorMessage, "The Internet connection appears to be offline.")
+  }
+  
+  func testLoginShouldAskLoginWorkerToFetchFromApiAndSendTimeoutErrorResponseToPresenterToFormatResult() {
+    // Given
+    let loginPresentationLogicSpy = LoginPresentationLogicSpy()
+    sut.presenter = loginPresentationLogicSpy
+    let workerSpy = LoginWorkerSpy()
+    sut.worker = workerSpy
+    let userPersistanceSpy = UserPersistanceSpy()
+    sut.userPersistance = userPersistanceSpy
+    
+    // When
+    let request = Login.LoginModel.Request(user: "InternetConnectionOffline", password: Seeds.loginData.password)
+    sut.login(request: request)
+    var errorMessage = String()
+    workerSpy.login(username: "Timeout", password: ""){ success, response, error in
+      errorMessage = (response?.error.errorMessage)!
+    }
+    // Then
+    XCTAssertFalse(userPersistanceSpy.saveUserIdCalled, "login() should save the user id to user defaults")
+    XCTAssert(workerSpy.loginCalled, "login() should ask LoginWorker to fetch from Api")
+    XCTAssertEqual(errorMessage, "The request timed out.")
   }
 }

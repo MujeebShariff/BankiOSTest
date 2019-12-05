@@ -25,8 +25,5 @@ public class TransactionTableViewCell: UITableViewCell {
     cardView.layer.shadowRadius = 5
     cardView.layer.cornerRadius = 6
   }
-  
-  override public func setSelected(_ selected: Bool, animated: Bool) {
-    super.setSelected(selected, animated: animated)
-  }
+
 }

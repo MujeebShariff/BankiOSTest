@@ -11,9 +11,9 @@ import Foundation
 import UIKit
 
 public class Utilities {
-  var container: UIView = UIView()
-  var loadingView: UIView = UIView()
-  var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+  private var container: UIView = UIView()
+  private var loadingView: UIView = UIView()
+  private var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
   
   // Show customized activity indicator
   func showActivityIndicator(view: UIView) {
@@ -49,7 +49,7 @@ public class Utilities {
   }
   
   // Define UIColor with hex value
-  func UIColorFromHex(rgbValue: UInt32, alpha: Double=1.0) -> UIColor {
+  private func UIColorFromHex(rgbValue: UInt32, alpha: Double=1.0) -> UIColor {
     let red = CGFloat((rgbValue & 0xFF0000) >> 16)/256.0
     let green = CGFloat((rgbValue & 0xFF00) >> 8)/256.0
     let blue = CGFloat(rgbValue & 0xFF)/256.0

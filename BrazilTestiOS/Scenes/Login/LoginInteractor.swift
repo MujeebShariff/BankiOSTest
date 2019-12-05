@@ -20,7 +20,7 @@ protocol LoginBusinessLogic {
 }
 
 protocol LoginDataStore {
-  var userDetails: UserAccount? { get }
+  var userDetails: UserAccount? { get set }
 }
 
 class LoginInteractor: LoginBusinessLogic, LoginDataStore {
